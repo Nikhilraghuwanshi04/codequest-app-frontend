@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import "./Auth.css"
+import { login, signup } from '../../action/auth'
 import icon from '../../assets/icon.png'
 import Aboutauth from './Aboutauth'
-import { signup, login } from '../../action/auth'
+import "./Auth.css"
 const Auth = () => {
     const [issignup, setissignup] = useState(false)
     const [name, setname] = useState("");
@@ -14,18 +14,18 @@ const Auth = () => {
     const navigate = useNavigate();
     const handlesubmit = (e) => {
         e.preventDefault();
-        if (!email && !password) {
+        if (!email || !password) {
             alert("Enter email and password")
+            return
         }
         if (issignup) {
             if (!name) {
                 alert("Enter a name to continue")
+                return
             }
             dispatch(signup({ name, email, password }, navigate))
-            
         } else {
             dispatch(login({ email, password }, navigate))
-        
         }
     }
     const handleswitch = () => {

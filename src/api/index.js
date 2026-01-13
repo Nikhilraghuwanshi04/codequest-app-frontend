@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://localhost:8000" // Ensure your backend is running on this URL
+    baseURL: process.env.REACT_APP_API_URL
 });
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem("Profile")) {
-        req.headers.Authorization = `Bearer ${
-            JSON.parse(localStorage.getItem("Profile")).token
-        }`;
+        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem("Profile")).token
+            }`;
     }
     return req;
 });
@@ -27,8 +26,8 @@ export const deletequestion = (id) => API.delete(`/questions/delete/${id}`);
 export const votequestion = (id, value) => API.patch(`/questions/vote/${id}`, { value });
 
 // Answer-related API calls
-export const postanswer = (id, noofanswers, answerbody, useranswered) => 
+export const postanswer = (id, noofanswers, answerbody, useranswered) =>
     API.patch(`/answer/post/${id}`, { noofanswers, answerbody, useranswered });
 
-export const deleteanswer = (id, answerid, noofanswers) => 
+export const deleteanswer = (id, answerid, noofanswers) =>
     API.patch(`/answer/delete/${id}`, { answerid, noofanswers });
